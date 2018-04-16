@@ -6,7 +6,7 @@ This module walks through authentication scenarios with Microsoft Graph.
 
 In this lab, you will walk through authentication and permissions scenarios leveraging the Microsoft Graph using the Graph SDK and Microsoft Authentication Library (MSAL).
 
-- [Lab Manual](./Lab.md)
+- [Lab Manual](./lab.md)
 
 ## Demos
 
@@ -15,6 +15,7 @@ In this lab, you will walk through authentication and permissions scenarios leve
 - [Dynamic Permissions](./Demos/03-dynamic-permissions)
 
 ## Contributors
+
 |        Roles         |                            Author(s)                             |
 | -------------------- | ---------------------------------------------------------------- |
 | Lab Manuals / Slides | Andrew Connell (Microsoft MVP, Voitanos) @andrewconnell          |
