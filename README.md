@@ -20,7 +20,7 @@ In this lab, you will walk through authentication and permissions scenarios leve
 | -------------------- | ---------------------------------------------------------------- |
 | Lab Manuals / Slides | Andrew Connell (Microsoft MVP, Voitanos) @andrewconnell          |
 | QA                   | Julie Turner (Microsoft MVP, Sympraxis Consulting) @juliemturner |
-| Sponsor / Support    | Mike Ammerlaan (Microsoft) @mammerla                             |
+| Sponsor / Support    | Yina Arenas (Microsoft) @yina_arenas                             |
 
 ## Version history
 
