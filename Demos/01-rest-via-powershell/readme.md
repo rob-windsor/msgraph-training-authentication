@@ -4,16 +4,6 @@ This demo will walk you through connecting to the Azure AD v2.0 endpoints to aut
 
 ## Register the application
 
-1. Visit the [Application Registration Portal](https://apps.dev.microsoft.com/) to register the application.
-
-1. Once the application is created, an app ID is provided on the screen. Copy this app ID as you will use it as the Client ID.
-
-1. Add a new app secret by selecting the **Generate new password** button and copy the app secret to use later as the client secret.
-
-1. Select the **Add Platform** button. In the dialog box, choose **Web Application**. Change the Redirect URL to **http://localhost:8089**. Select **Save**.
-
-    ![Screenshot of Application Registration Portal.](../../Images/01.png)
-
 1. Open **Visual Studio 2017** and create a new **ASP.NET Web Application (.NET Framework)**.
 
     ![Screenshot of Visual Studio 2017 new project menu.](../../Images/01a.png)
@@ -22,11 +12,21 @@ This demo will walk you through connecting to the Azure AD v2.0 endpoints to aut
 
     ![Screenshot of ASP.NET application menu with MVC highlighted.](../../Images/01b.png)
 
-1. Copy the URL of the MVC app for use in the following script. Start the debugger.
+1. Copy the URL of the MVC app for use in the following steps. Start the debugger.
 
     ![Screenshot of the MVC app with localhost URL highlighted.](../../Images/01c.png)
 
-1. Open a new **PowerShell ISE** window. Copy the following code and paste in the script pane. Replace `[YOUR WEB APP URL]` in the third to last line with the URL of the web application you created in the previous step.
+1. Visit the [Application Registration Portal](https://apps.dev.microsoft.com/) to register the application.
+
+1. Once the application is created, an app ID is provided on the screen. Copy this app ID as you will use it as the Client ID.
+
+1. Add a new app secret by selecting the **Generate new password** button and copy the app secret to use later as the client secret.
+
+1. Select the **Add Platform** button. In the dialog box, choose **Web Application**. Change the Redirect URL to the URL of your MVC Application. Select **Save**.
+
+    ![Screenshot of Application Registration Portal.](../../Images/01.png)
+
+1. Open a new **PowerShell ISE** window. Copy the following code and paste in the script pane. Replace `[YOUR WEB APP URL]` in the third to last line with the URL of the MVC web application you used in the Redirect URL of the application registration.
 
     ```powershell
     function Get-CurrentUserProfile

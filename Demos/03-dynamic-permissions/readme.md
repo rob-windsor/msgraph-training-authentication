@@ -12,7 +12,9 @@ This demo will walk you through creating a web application that connects with Mi
 
 1. Add a new app secret by selecting the **Generate new password** button and copy the secret to use later as the Client Secret.
 
-1. Select the **Add Platform** button. A dialog box is presented, choose **Web Application**. Change the Redirect URL to **https://localhost:44326/**. Select **Save** to save all changes.
+1. Select the **Add Platform** button. A dialog box is presented, choose **Web Application**. 
+
+1. Change the Redirect URL to **https://localhost:44326/**. Select **Save** to save all changes.
 
     ![Screenshot of permissions dialog for the Application Registration Portal.](../../Images/11.png)
 

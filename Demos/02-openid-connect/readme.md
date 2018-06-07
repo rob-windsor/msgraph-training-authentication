@@ -30,13 +30,13 @@ This demo will walk you through creating a web application that connects with Mi
 
 1. Open the solution using **Visual Studio 2017**. Restore the missing NuGet packages and reload the solution.
 
-1. Verify that the `Scope` variable in your code is equal to `openid email profile offline_access Mail.Read`. Change it if needed.
-
-    >Note:  Edit the **web.config** file with your app's coordinates. Find the appSettings key `ida:ClientId` and provide the app ID from your app registration. Find the appSettings key `ida:ClientSecret` and provide the value from the app secret generated in the previous step.
+1. Edit the **web.config** file with your app's coordinates. Find the appSettings key `ida:ClientId` and provide the app ID from your app registration. Find the appSettings key `ida:ClientSecret` and provide the value from the app secret generated in the previous step.
 
 ## Inspect the code sample
 
 1. Open the **App_Start/Startup.Auth.cs** file. This is where authentication begins using the OWIN middleware.
+
+1. Verify that the `Scope` variable in your code is equal to `openid email profile offline_access Mail.Read`. Change it if needed.
 
     ```csharp
     app.UseOpenIdConnectAuthentication(

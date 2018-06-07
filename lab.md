@@ -4,9 +4,9 @@ In this lab, you will walk through authentication and permissions scenarios usin
 
 ## In this lab
 
-1. [Obtain tokens and connect with the Microsoft Graph using REST](#exercise1)
-1. [Connecting with Microsoft Graph using OpenID Connect](#exercise2)
-1. [Dynamic permissions with the Azure AD v2.0 endpoint and Microsoft Graph](#exercise3)
+1. [Obtain tokens and connect with the Microsoft Graph using REST](#Exercise_1:_Obtain_tokens_and_connect_with_the_Microsoft_Graph_using_REST)
+1. [Connecting with Microsoft Graph using OpenID Connect](#Exercise_2:_Connecting_with_Microsoft_Graph_using_OpenID_Connect)
+1. [Dynamic permissions with the Azure AD v2.0 endpoint and Microsoft Graph](#Exercise_3:_Dynamic_permissions_with_the_Azure_AD_v2.0_endpoint_and_Microsoft_Graph)
 
 ## Prerequisites
 
@@ -16,23 +16,11 @@ This lab uses **PowerShell ISE** and **Visual Studio 2017**. It also requires an
 
 Open the **Visual Studio 2017** installer and enable the **.NET desktop development**, **Mobile applications with .NET**, **Azure development**,and **Universal Windows Platform** features. Make sure to update Visual Studio 2017 to the latest version, and update VSIX packages (Tools > Extensions and Updates).
 
-<a name="exercise1"></a>
-
 ## Exercise 1: Obtain tokens and connect with the Microsoft Graph using REST
 
 This lab will walk you through connecting to the Azure AD v2.0 endpoints to authorize the application, obtain a token and connect with Microsoft Graph.
 
 ### Register the application
-
-1. Visit the [Application Registration Portal](https://apps.dev.microsoft.com/) to register the application.
-
-1. Once the application is created, an app ID is provided on the screen. Copy this app ID as you will use it as the Client ID.
-
-1. Add a new app secret by selecting the **Generate new password** button and copy the app secret to use later as the client secret.
-
-1. Select the **Add Platform** button. In the dialog box, choose **Web Application**. Change the Redirect URL to **http://localhost:8089**. Select **Save**.
-
-    ![Screenshot of Application Registration Portal.](Images/01.png)
 
 1. Open **Visual Studio 2017** and create a new **ASP.NET Web Application (.NET Framework)**.
 
@@ -42,11 +30,21 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
 
     ![Screenshot of ASP.NET application menu with MVC highlighted.](Images/01b.png)
 
-1. Copy the URL of the MVC app for use in the following script. Start the debugger.
+1. Copy the URL of the MVC app for use in the following steps. Start the debugger.
 
     ![Screenshot of the MVC app with localhost URL highlighted.](Images/01c.png)
 
-1. Open a new **PowerShell ISE** window. Copy the following code and paste in the script pane. Replace `[YOUR WEB APP URL]` in the third to last line with the URL of the web application you created in the previous step.
+1. Visit the [Application Registration Portal](https://apps.dev.microsoft.com/) to register the application.
+
+1. Once the application is created, an app ID is provided on the screen. Copy this app ID as you will use it as the Client ID.
+
+1. Add a new app secret by selecting the **Generate new password** button and copy the app secret to use later as the client secret.
+
+1. Select the **Add Platform** button. In the dialog box, choose **Web Application**. Change the Redirect URL to the URL of your MVC Application. Select **Save**.
+
+    ![Screenshot of Application Registration Portal.](Images/01.png)
+
+1. Open a new **PowerShell ISE** window. Copy the following code and paste in the script pane. Replace `[YOUR WEB APP URL]` in the third to last line with the URL of the MVC web application you used in the Redirect URL of the application registration.
 
     ```powershell
     function Get-CurrentUserProfile
@@ -164,8 +162,6 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
 
     ![Screenshot of the deoded JWT token ](Images/09.png)
 
-<a name="exercise2"></a>
-
 ## Exercise 2: Connecting with Microsoft Graph using OpenID Connect
 
 This exercise will walk you through creating a web application that connects with Microsoft Graph using OpenID Connect.
@@ -198,13 +194,13 @@ This exercise will walk you through creating a web application that connects wit
 
 1. Open the solution using **Visual Studio 2017**. Restore the missing NuGet packages and reload the solution.
 
-1. Verify that the `Scope` variable in your code is equal to `openid email profile offline_access Mail.Read`. Change it if needed.
-
-    >Note:  Edit the **web.config** file with your app's coordinates. Find the appSettings key `ida:ClientId` and provide the app ID from your app registration. Find the appSettings key `ida:ClientSecret` and provide the value from the app secret generated in the previous step.
+1. Edit the **web.config** file with your app's coordinates. Find the appSettings key `ida:ClientId` and provide the app ID from your app registration. Find the appSettings key `ida:ClientSecret` and provide the value from the app secret generated in the previous step.
 
 ### Inspect the code sample
 
 1. Open the **App_Start/Startup.Auth.cs** file. This is where authentication begins using the OWIN middleware.
+
+1. Verify that the `Scope` variable in your code is equal to `openid email profile offline_access Mail.Read`. Change it if needed.
 
     ```csharp
     app.UseOpenIdConnectAuthentication(
@@ -351,7 +347,7 @@ This exercise will walk you through creating a web application that connects wit
 
 ### Run the application
 
-1. Run the application. Selecting either **About** or the sign in link in the top right will prompt you to sign in.
+1. Run the application, verifying it's running **https://localhost:44326/** which you entered as your Redirect URL in your app registration. Selecting either **About** or the sign in link in the top right will prompt you to sign in.
 
     ![Screenshot of the web application pre logged in](Images/13.png)
 
@@ -366,8 +362,6 @@ This exercise will walk you through creating a web application that connects wit
     ![Screenshot of currently logged in user's data after logging in.](Images/16.png)
 
 1. Since you are now logged in, the **Read Mail** link is now visible. Select the **Read Mail** link. You can now read email messages from your inbox.
-
-<a name="exercise3"></a>
 
 ## Exercise 3: Dynamic permissions with the Azure AD v2.0 endpoint and Microsoft Graph
 
