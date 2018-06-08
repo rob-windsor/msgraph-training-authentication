@@ -1,4 +1,4 @@
-# Microsoft Graph: Authenticate and Connect to Microsoft Graph - 200 Level
+# Microsoft Graph: Authenticate and Connect to Microsoft Graph
 
 This folder contains demos for the Authenticate and Connect to Microsoft Graph module.
 
