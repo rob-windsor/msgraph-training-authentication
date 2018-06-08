@@ -24,16 +24,18 @@ This module has been recorded and is available in the Office Development YouTube
 | -------------------- | ---------------------------------------------------------------- |
 | Lab Manuals / Slides | Andrew Connell (Microsoft MVP, Voitanos) @andrewconnell          |
 | QA                   | Julie Turner (Microsoft MVP, Sympraxis Consulting) @juliemturner |
-| Sponsor / Support    | Mike Ammerlaan (Microsoft) @mammerla                             |
+| Sponsor / Support    | Yina Arenas (Microsoft) @yina_arenas                             |
 
 ## Version history
 
-| Version |      Date      |             Comments              |
-| ------- | -------------- | --------------------------------- |
-| 1.2     | May 25, 2018   | 2018Q4 content refresh & style guide updates |
-| 1.1     | March 14, 2018 | Code Review and minor corrections |
-| 1.0     |                | Initial release                   |
+| Version |      Date      |                   Comments                   |
+| ------- | -------------- | -------------------------------------------- |
+| 1.2     | June 8, 2018   | 2018Q4 content refresh & style guide updates |
+| 1.1     | March 14, 2018 | Code Review and minor corrections            |
+| 1.0     |                | Initial release                              |
 
 ## Disclaimer
 
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+
+<img src="https://telemetry.sharepointpnp.com/msgraph-training-authentication" />
