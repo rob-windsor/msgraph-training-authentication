@@ -2,7 +2,7 @@
 
 This demo will walk you through connecting to the Azure AD v2.0 endpoints to authorize the application, obtain a token and connect with Microsoft Graph.
 
-## Register the application
+## Register the application for getting tokens using REST
 
 1. Open **Visual Studio 2017** and create a new **ASP.NET Web Application (.NET Framework)**.
 

@@ -2,7 +2,7 @@
 
 This demo will walk you through creating a web application that connects with Microsoft Graph using OpenID Connect and requests additional permissions.
 
-## Register the application
+## Register the application for Dynamic permissions
 
 **Note:** You can reuse the same application registration from the previous lab, [Connecting with Microsoft Graph using OpenID Connect](#exercise2). If you have already completed the app registration, move to the next section.
 
@@ -28,7 +28,7 @@ This demo will walk you through creating a web application that connects with Mi
 
 1. Edit the **web.config** file with your app's coordinates. Find the appSettings key `ida:ClientId` and provide the app ID from your app registration. Find the appSettings key `ida:ClientSecret` and provide the value from the app secret generated in the previous step.
 
-## Inspect the code sample
+## Inspect the code sample for Dynamic permissions
 
 1. Open the **App_Start/Startup.Auth.cs** file. This is where authentication begins using the OWIN middleware.
 
@@ -157,9 +157,9 @@ This demo will walk you through creating a web application that connects with Mi
     }
     ```
 
-## Run the application
+## Run the application for Dynamic permissions
 
-1. Run the application. Selecting the **About** link or select the **sign in** link in the top right to sign in.
+1. Run the application. Select the **sign in** link in the top right to sign in.
 
     ![Screenshot of the web application pre logged in](../../Images/13.png)
 

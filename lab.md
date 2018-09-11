@@ -4,9 +4,9 @@ In this lab, you will walk through authentication and permissions scenarios usin
 
 ## In this lab
 
-1. [Obtain tokens and connect with the Microsoft Graph using REST](#Exercise_1:_Obtain_tokens_and_connect_with_the_Microsoft_Graph_using_REST)
-1. [Connecting with Microsoft Graph using OpenID Connect](#Exercise_2:_Connecting_with_Microsoft_Graph_using_OpenID_Connect)
-1. [Dynamic permissions with the Azure AD v2.0 endpoint and Microsoft Graph](#Exercise_3:_Dynamic_permissions_with_the_Azure_AD_v2.0_endpoint_and_Microsoft_Graph)
+1. [Obtain tokens and connect with the Microsoft Graph using REST](#exercise-1-obtain-tokens-and-connect-with-the-microsoft-graph-using-rest)
+1. [Connecting with Microsoft Graph using OpenID Connect](#exercise-2-connecting-with-microsoft-graph-using-openid-connect)
+1. [Dynamic permissions with the Azure AD v2.0 endpoint and Microsoft Graph](#exercise-3-dynamic-permissions-with-the-azure-ad-v20-endpoint-and-microsoft-graph)
 
 ## Prerequisites
 
@@ -20,7 +20,7 @@ Open the **Visual Studio 2017** installer and enable the **.NET desktop developm
 
 This lab will walk you through connecting to the Azure AD v2.0 endpoints to authorize the application, obtain a token and connect with Microsoft Graph.
 
-### Register the application
+### Register the application for getting tokens using REST
 
 1. Open **Visual Studio 2017** and create a new **ASP.NET Web Application (.NET Framework)**.
 
@@ -60,7 +60,7 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
             $scopes,
             [parameter(Mandatory=$true)]
             [string]
-            $redirecUrl,
+            $redirectUrl,
             [switch]
             $displayTokens
         )
@@ -81,7 +81,7 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
         $requestUrl += "&client_id=$clientID"
 
         #Add your app's redirect URL
-        $requestUrl += "&redirect_uri=$redirecUrl"
+        $requestUrl += "&redirect_uri=$redirectUrl"
 
         #Options for response_mode are "query" or "form_post". We want the response
         #to include the data in the querystring
@@ -96,7 +96,7 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
         Write-Host
         $code = Read-Host -Prompt "Enter the code"
 
-        $body = "client_id=$clientID&client_secret=$clientSecret&scope=$scopes&grant_type=authorization_code&code=$code&redirect_uri=$redirecUrl"
+        $body = "client_id=$clientID&client_secret=$clientSecret&scope=$scopes&grant_type=authorization_code&code=$code&redirect_uri=$redirectUrl"
         #v2.0 token URL
         $tokenUrl = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
 
@@ -112,7 +112,7 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
         Invoke-RestMethod -Method Get -Uri "https://graph.microsoft.com/v1.0/me" -Headers @{"Authorization" = "bearer $token"}
     }
 
-    #offline_acess:  Allows requesting refresh tokens
+    #offline_access:  Allows requesting refresh tokens
     #openid:  Allows your app to sign the user in and receive an app-specific identifier for the user
     #profile: Allows your app access to all other basic information such as name, preferred username, object ID, and others
     #User.Read: Allows your app to read the current's user's profile
@@ -123,7 +123,7 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
     $redirectURL = "[YOUR WEB APP URL]"
 
     $credential = Get-Credential -Message "Enter the client ID and client secret"
-    Get-CurrentUserProfile $credential -scopes $scopes -redirecUrl $redirectURL -displayTokens
+    Get-CurrentUserProfile $credential -scopes $scopes -redirectUrl $redirectURL -displayTokens
     ```
 
     >Note:  This script will first create an URL to the authorize endpoint, providing the client ID, permission scopes, and redirect URL. If you attempted to use Invoke-RestMethod to this endpoint, the result would be the HTML content of the resulting login screen. You need to log in and authorize the application, so you will copy the URL to a browser.
@@ -156,7 +156,7 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
 
     ![Screenshot of the access_token.](Images/08.png)
 
-1. Open a browser and go to **https://jwt.calebb.net**.
+1. Open a browser and go to **<https://jwt.calebb.net>**.
 
 1. Paste the encoded token to inspect its contents.
 
@@ -172,7 +172,7 @@ This exercise will walk you through creating a web application that connects wit
 - A personal Microsoft Account with access to an Outlook.com enabled mailbox
 - A work or school account with access to an Office 365 enabled mailbox
 
-### Register the application
+### Register the application for OpenID Connect
 
 1. Visit the [Application Registration Portal](https://apps.dev.microsoft.com/) to register the application.
 
@@ -196,7 +196,7 @@ This exercise will walk you through creating a web application that connects wit
 
 1. Edit the **web.config** file with your app's coordinates. Find the appSettings key `ida:ClientId` and provide the app ID from your app registration. Find the appSettings key `ida:ClientSecret` and provide the value from the app secret generated in the previous step.
 
-### Inspect the code sample
+### Inspect the code sample for OpenID Connect
 
 1. Open the **App_Start/Startup.Auth.cs** file. This is where authentication begins using the OWIN middleware.
 
@@ -345,9 +345,9 @@ This exercise will walk you through creating a web application that connects wit
     }
     ```
 
-### Run the application
+### Run the application for OpenID Connect
 
-1. Run the application, verifying it's running **https://localhost:44326/** which you entered as your Redirect URL in your app registration. Selecting either **About** or the sign in link in the top right will prompt you to sign in.
+1. Run the application, verifying it's running **<https://localhost:44326/>** which you entered as your Redirect URL in your app registration. Selecting the sign in link in the top right will prompt you to sign in.
 
     ![Screenshot of the web application pre logged in](Images/13.png)
 
@@ -367,7 +367,7 @@ This exercise will walk you through creating a web application that connects wit
 
 This exercise will walk you through creating a web application that connects with Microsoft Graph using OpenID Connect and requests additional permissions.
 
-### Register the application
+### Register the application for Dynamic permissions
 
 **Note:** You can reuse the same application registration from the previous lab, [Connecting with Microsoft Graph using OpenID Connect](#exercise2). If you have already completed the app registration, move to the next section.
 
@@ -391,7 +391,7 @@ This exercise will walk you through creating a web application that connects wit
 
 1. Edit the **web.config** file with your app's coordinates. Find the appSettings key `ida:ClientId` and provide the app ID from your app registration. Find the appSettings key `ida:ClientSecret` and provide the value from the app secret generated in the previous step.
 
-### Inspect the code sample
+### Inspect the code sample for Dynamic permissions
 
 1. Open the **App_Start/Startup.Auth.cs** file. This is where authentication begins using the OWIN middleware.
 
@@ -520,9 +520,9 @@ This exercise will walk you through creating a web application that connects wit
     }
     ```
 
-### Run the application
+### Run the application for Dynamic permissions
 
-1. Run the application. Selecting the **About** link or select the **sign in** link in the top right to sign in.
+1. Run the application. Select the **sign in** link in the top right to sign in.
 
     ![Screenshot of the web application pre logged in](Images/13.png)
 
@@ -542,7 +542,7 @@ This exercise will walk you through creating a web application that connects wit
 
     ![Screenshot of ](Images/17.png)
 
-1. Select the link. You are now prompted to consent. The permissions include "Send mail as you".
+1. Select the **Send Mail** link. You are now prompted to consent. The permissions include "Send mail as you".
 
     ![Screenshot of permission dialog box.](Images/18.png)
 
