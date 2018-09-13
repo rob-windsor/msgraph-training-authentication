@@ -8,7 +8,7 @@ This demo will walk you through creating a web application that connects with Mi
 - A personal Microsoft Account with access to an Outlook.com enabled mailbox
 - A work or school account with access to an Office 365 enabled mailbox
 
-## Register the application
+## Register the application for OpenID Connect
 
 1. Visit the [Application Registration Portal](https://apps.dev.microsoft.com/) to register the application.
 
@@ -32,7 +32,7 @@ This demo will walk you through creating a web application that connects with Mi
 
 1. Edit the **web.config** file with your app's coordinates. Find the appSettings key `ida:ClientId` and provide the app ID from your app registration. Find the appSettings key `ida:ClientSecret` and provide the value from the app secret generated in the previous step.
 
-## Inspect the code sample
+## Inspect the code sample for OpenID Connect
 
 1. Open the **App_Start/Startup.Auth.cs** file. This is where authentication begins using the OWIN middleware.
 
@@ -181,7 +181,7 @@ This demo will walk you through creating a web application that connects with Mi
     }
     ```
 
-## Run the application
+## Run the application for OpenID Connect
 
 1. Run the application. Selecting either **About** or the sign in link in the top right will prompt you to sign in.
 

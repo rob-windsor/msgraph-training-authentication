@@ -11,7 +11,7 @@
             $scopes,
             [parameter(Mandatory=$true)]
             [string]
-            $redirecUrl,
+            $redirectUrl,
             [switch]
             $displayTokens
         )
@@ -32,7 +32,7 @@
         $requestUrl += "&client_id=$clientID"
 
         #Add your app's redirect URL
-        $requestUrl += "&redirect_uri=$redirecUrl"
+        $requestUrl += "&redirect_uri=$redirectUrl"
 
         #Options for response_mode are "query" or "form_post". We want the response
         #to include the data in the querystring
@@ -47,7 +47,7 @@
         Write-Host
         $code = Read-Host -Prompt "Enter the code"
 
-        $body = "client_id=$clientID&client_secret=$clientSecret&scope=$scopes&grant_type=authorization_code&code=$code&redirect_uri=$redirecUrl"
+        $body = "client_id=$clientID&client_secret=$clientSecret&scope=$scopes&grant_type=authorization_code&code=$code&redirect_uri=$redirectUrl"
         #v2.0 token URL
         $tokenUrl = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
 
@@ -74,4 +74,4 @@
     $redirectURL = "[YOUR WEB APP URL]"
 
     $credential = Get-Credential -Message "Enter the client ID and client secret"
-    Get-CurrentUserProfile $credential -scopes $scopes -redirecUrl $redirectURL -displayTokens
+    Get-CurrentUserProfile $credential -scopes $scopes -redirectUrl $redirectURL -displayTokens
