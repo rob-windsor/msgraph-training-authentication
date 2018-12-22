@@ -49,67 +49,67 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
     ```powershell
     function Get-CurrentUserProfile
     {
-        Param
-        (
-            [parameter(Mandatory=$true,
-            ValueFromPipeline=$true)]
-            [PSCredential]
-            $credential,
-            [parameter(Mandatory=$true)]
-            [string]
-            $scopes,
-            [parameter(Mandatory=$true)]
-            [string]
-            $redirectUrl,
-            [switch]
-            $displayTokens
-        )
+      Param
+      (
+        [parameter(Mandatory=$true,
+        ValueFromPipeline=$true)]
+        [PSCredential]
+        $credential,
+        [parameter(Mandatory=$true)]
+        [string]
+        $scopes,
+        [parameter(Mandatory=$true)]
+        [string]
+        $redirectUrl,
+        [switch]
+        $displayTokens
+      )
 
-        $clientID = $credential.Username
-        $clientSecret = $credential.GetNetworkCredential().Password
+      $clientID = $credential.Username
+      $clientSecret = $credential.GetNetworkCredential().Password
 
-        #v2.0 authorize URL
-        $authorizeUrl = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
+      #v2.0 authorize URL
+      $authorizeUrl = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
 
-        #Permission scopes
-        $requestUrl = $authorizeUrl + "?scope=$scopes"
+      #Permission scopes
+      $requestUrl = $authorizeUrl + "?scope=$scopes"
 
-        #Code grant, will receive a code that can be redeemed for a token
-        $requestUrl += "&response_type=code"
+      #Code grant, will receive a code that can be redeemed for a token
+      $requestUrl += "&response_type=code"
 
-        #Add your app's Application ID
-        $requestUrl += "&client_id=$clientID"
+      #Add your app's Application ID
+      $requestUrl += "&client_id=$clientID"
 
-        #Add your app's redirect URL
-        $requestUrl += "&redirect_uri=$redirectUrl"
+      #Add your app's redirect URL
+      $requestUrl += "&redirect_uri=$redirectUrl"
 
-        #Options for response_mode are "query" or "form_post". We want the response
-        #to include the data in the querystring
-        $requestUrl += "&response_mode=query"
+      #Options for response_mode are "query" or "form_post". We want the response
+      #to include the data in the querystring
+      $requestUrl += "&response_mode=query"
 
-        Write-Host
-        Write-Host "Copy the following URL and paste the following into your browser:"
-        Write-Host
-        Write-Host $requestUrl -ForegroundColor Cyan
-        Write-Host
-        Write-Host "Copy the code querystring value from the browser and paste it below."
-        Write-Host
-        $code = Read-Host -Prompt "Enter the code"
+      Write-Host
+      Write-Host "Copy the following URL and paste the following into your browser:"
+      Write-Host
+      Write-Host $requestUrl -ForegroundColor Cyan
+      Write-Host
+      Write-Host "Copy the code querystring value from the browser and paste it below."
+      Write-Host
+      $code = Read-Host -Prompt "Enter the code"
 
-        $body = "client_id=$clientID&client_secret=$clientSecret&scope=$scopes&grant_type=authorization_code&code=$code&redirect_uri=$redirectUrl"
-        #v2.0 token URL
-        $tokenUrl = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
+      $body = "client_id=$clientID&client_secret=$clientSecret&scope=$scopes&grant_type=authorization_code&code=$code&redirect_uri=$redirectUrl"
+      #v2.0 token URL
+      $tokenUrl = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
 
-        $response = Invoke-RestMethod -Method Post -Uri $tokenUrl -Headers @{"Content-Type" = "application/x-www-form-urlencoded"} -Body $body
+      $response = Invoke-RestMethod -Method Post -Uri $tokenUrl -Headers @{"Content-Type" = "application/x-www-form-urlencoded"} -Body $body
 
-        if($displayTokens)
-        {
-            $response | select * | fl
-        }
+      if($displayTokens)
+      {
+        $response | select * | fl
+      }
 
-        #Pass the access_token in the Authorization header to the Microsoft Graph
-        $token = $response.access_token
-        Invoke-RestMethod -Method Get -Uri "https://graph.microsoft.com/v1.0/me" -Headers @{"Authorization" = "bearer $token"}
+      #Pass the access_token in the Authorization header to the Microsoft Graph
+      $token = $response.access_token
+      Invoke-RestMethod -Method Get -Uri "https://graph.microsoft.com/v1.0/me" -Headers @{"Authorization" = "bearer $token"}
     }
 
     #offline_access:  Allows requesting refresh tokens
@@ -156,7 +156,7 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
 
     ![Screenshot of the access_token.](Images/08.png)
 
-1. Open a browser and go to **<https://jwt.calebb.net>**.
+1. Open a browser and go to **https://jwt.io**.
 
 1. Paste the encoded token to inspect its contents.
 
@@ -204,28 +204,28 @@ This exercise will walk you through creating a web application that connects wit
 
     ```csharp
     app.UseOpenIdConnectAuthentication(
-        new OpenIdConnectAuthenticationOptions
-        {
-            // The `Authority` represents the v2.0 endpoint - https://login.microsoftonline.com/common/v2.0
-            // The `Scope` describes the initial permissions that your app will need.  See https://azure.microsoft.com/documentation/articles/active-directory-v2-scopes/
+      new OpenIdConnectAuthenticationOptions
+      {
+        // The `Authority` represents the v2.0 endpoint - https://login.microsoftonline.com/common/v2.0
+        // The `Scope` describes the initial permissions that your app will need.  See https://azure.microsoft.com/documentation/articles/active-directory-v2-scopes/
 
-            ClientId = clientId,
-            Authority = String.Format(CultureInfo.InvariantCulture, aadInstance, "common", "/v2.0"),
-            RedirectUri = redirectUri,
-            Scope = "openid email profile offline_access Mail.Read",
-            PostLogoutRedirectUri = redirectUri,
-            TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = false,
-                // In a real application you would use IssuerValidator for additional checks, like making sure the user's organization has signed up for your app.
-                //     IssuerValidator = (issuer, token, tvp) =>
-                //     {
-                //        //if(MyCustomTenantValidation(issuer))
-                //        return issuer;
-                //        //else
-                //        //    throw new SecurityTokenInvalidIssuerException("Invalid issuer");
-                //    },
-            },
+        ClientId = clientId,
+        Authority = String.Format(CultureInfo.InvariantCulture, aadInstance, "common", "/v2.0"),
+        RedirectUri = redirectUri,
+        Scope = "openid email profile offline_access Mail.Read",
+        PostLogoutRedirectUri = redirectUri,
+        TokenValidationParameters = new TokenValidationParameters
+        {
+          ValidateIssuer = false,
+          // In a real application you would use IssuerValidator for additional checks, like making sure the user's organization has signed up for your app.
+          //     IssuerValidator = (issuer, token, tvp) =>
+          //     {
+          //        //if(MyCustomTenantValidation(issuer))
+          //        return issuer;
+          //        //else
+          //        //    throw new SecurityTokenInvalidIssuerException("Invalid issuer");
+          //    },
+        },
     ```
 
     >Note:  When an authorization code is received, the code is redeemed for an access token and a refresh token which are stored in cache.
@@ -233,31 +233,30 @@ This exercise will walk you through creating a web application that connects wit
     ```csharp
     Notifications = new OpenIdConnectAuthenticationNotifications
     {
-        // If there is a code in the OpenID Connect response, redeem it for an access token and refresh token, and store those away.
-        AuthorizationCodeReceived = async (context) =>
+      // If there is a code in the OpenID Connect response, redeem it for an access token and refresh token, and store those away.
+      AuthorizationCodeReceived = async (context) =>
+      {
+        var code = context.Code;
+        string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
+        TokenCache userTokenCache = new MSALSessionCache(signedInUserID,
+          context.OwinContext.Environment["System.Web.HttpContextBase"] as HttpContextBase).GetMsalCacheInstance();
+        ConfidentialClientApplication cca =
+          new ConfidentialClientApplication(clientId, redirectUri, new ClientCredential(appKey), userTokenCache,null);
+        string[] scopes = { "Mail.Read" };
+        try
         {
-            var code = context.Code;
-            string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            TokenCache userTokenCache = new MSALSessionCache(signedInUserID,
-                context.OwinContext.Environment["System.Web.HttpContextBase"] as HttpContextBase).GetMsalCacheInstance();
-            ConfidentialClientApplication cca =
-                new ConfidentialClientApplication(clientId, redirectUri, new ClientCredential(appKey), userTokenCache,null);
-            string[] scopes = { "Mail.Read" };
-            try
-            {
-                AuthenticationResult result = await cca.AcquireTokenByAuthorizationCodeAsync(code, scopes);
-            }
-            catch (Exception eee)
-            {
-
-            }
-        },
-        AuthenticationFailed = (notification) =>
-        {
-            notification.HandleResponse();
-            notification.Response.Redirect("/Error?message=" + notification.Exception.Message);
-            return Task.FromResult(0);
+          AuthenticationResult result = await cca.AcquireTokenByAuthorizationCodeAsync(code, scopes);
         }
+        catch (Exception eee)
+        {
+        }
+      },
+      AuthenticationFailed = (notification) =>
+      {
+        notification.HandleResponse();
+        notification.Response.Redirect("/Error?message=" + notification.Exception.Message);
+        return Task.FromResult(0);
+      }
     }
     ```
 
@@ -266,21 +265,21 @@ This exercise will walk you through creating a web application that connects wit
     ```csharp
     public void Load()
     {
-        SessionLock.EnterReadLock();
-        cache.Deserialize((byte[])httpContext.Session[CacheId]);
-        SessionLock.ExitReadLock();
+      SessionLock.EnterReadLock();
+      cache.Deserialize((byte[])httpContext.Session[CacheId]);
+      SessionLock.ExitReadLock();
     }
 
     public void Persist()
     {
-        SessionLock.EnterWriteLock();
+      SessionLock.EnterWriteLock();
 
-        // Optimistically set HasStateChanged to false. We need to do it early to avoid losing changes made by a concurrent thread.
-        cache.HasStateChanged = false;
+      // Optimistically set HasStateChanged to false. We need to do it early to avoid losing changes made by a concurrent thread.
+      cache.HasStateChanged = false;
 
-        // Reflect changes in the persistent store
-        httpContext.Session[CacheId] = cache.Serialize();
-        SessionLock.ExitWriteLock();
+      // Reflect changes in the persistent store
+      httpContext.Session[CacheId] = cache.Serialize();
+      SessionLock.ExitWriteLock();
     }
     ```
 
@@ -290,18 +289,18 @@ This exercise will walk you through creating a web application that connects wit
     [Authorize]
     public async Task<ActionResult> About()
     {
-        ViewBag.Name = ClaimsPrincipal.Current.FindFirst("name").Value;
-        ViewBag.AuthorizationRequest = string.Empty;
-        // The object ID claim will only be emitted for work or school accounts at this time.
-        Claim oid = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier");
-        ViewBag.ObjectId = oid == null ? string.Empty : oid.Value;
+      ViewBag.Name = ClaimsPrincipal.Current.FindFirst("name").Value;
+      ViewBag.AuthorizationRequest = string.Empty;
+      // The object ID claim will only be emitted for work or school accounts at this time.
+      Claim oid = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier");
+      ViewBag.ObjectId = oid == null ? string.Empty : oid.Value;
 
-        // The 'preferred_username' claim can be used for showing the user's primary way of identifying themselves
-        ViewBag.Username = ClaimsPrincipal.Current.FindFirst("preferred_username").Value;
+      // The 'preferred_username' claim can be used for showing the user's primary way of identifying themselves
+      ViewBag.Username = ClaimsPrincipal.Current.FindFirst("preferred_username").Value;
 
-        // The subject or nameidentifier claim can be used to uniquely identify the user
-        ViewBag.Subject = ClaimsPrincipal.Current.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
-        return View();
+      // The subject or nameidentifier claim can be used to uniquely identify the user
+      ViewBag.Subject = ClaimsPrincipal.Current.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+      return View();
     }
     ```
 
@@ -310,44 +309,44 @@ This exercise will walk you through creating a web application that connects wit
     ```csharp
     public async Task<ActionResult> ReadMail()
     {
-        try
-        {
-            string signedInUserID = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-            TokenCache userTokenCache = new MSALSessionCache(signedInUserID, this.HttpContext).GetMsalCacheInstance();
+      try
+      {
+        string signedInUserID = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
+        TokenCache userTokenCache = new MSALSessionCache(signedInUserID, this.HttpContext).GetMsalCacheInstance();
 
-            ConfidentialClientApplication cca =
-                new ConfidentialClientApplication(clientId, redirectUri, new ClientCredential(appKey), userTokenCache, null);
-            if (cca.Users.Count() > 0)
-            {
-                string[] scopes = { "Mail.Read" };
-                AuthenticationResult result = await cca.AcquireTokenSilentAsync(scopes, cca.Users.First());
+        ConfidentialClientApplication cca =
+          new ConfidentialClientApplication(clientId, redirectUri, new ClientCredential(appKey), userTokenCache, null);
+        if (cca.Users.Count() > 0)
+        {
+          string[] scopes = { "Mail.Read" };
+          AuthenticationResult result = await cca.AcquireTokenSilentAsync(scopes, cca.Users.First());
 
-                HttpClient hc = new HttpClient();
-                hc.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", result.AccessToken);
-                HttpResponseMessage hrm = await hc.GetAsync("https://graph.microsoft.com/v1.0/me/messages");
-                string rez = await hrm.Content.ReadAsStringAsync();
-                ViewBag.Message = rez;
-            }
-            else { }
-            return View();
+          HttpClient hc = new HttpClient();
+          hc.DefaultRequestHeaders.Authorization =
+              new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", result.AccessToken);
+          HttpResponseMessage hrm = await hc.GetAsync("https://graph.microsoft.com/v1.0/me/messages");
+          string rez = await hrm.Content.ReadAsStringAsync();
+          ViewBag.Message = rez;
         }
-        catch (MsalUiRequiredException)
-        {
-            ViewBag.Relogin = "true";
-            return View();
-        }
-        catch (Exception eee)
-        {
-            ViewBag.Error = "An error has occurred. Details: " + eee.Message;
-            return View();
-        }
+        else { }
+        return View();
+      }
+      catch (MsalUiRequiredException)
+      {
+        ViewBag.Relogin = "true";
+        return View();
+      }
+      catch (Exception eee)
+      {
+        ViewBag.Error = "An error has occurred. Details: " + eee.Message;
+        return View();
+      }
     }
     ```
 
 ### Run the application for OpenID Connect
 
-1. Run the application, verifying it's running **<https://localhost:44326/>** which you entered as your Redirect URL in your app registration. Selecting the sign in link in the top right will prompt you to sign in.
+1. Run the application, verifying it's running **https://localhost:44326** which you entered as your Redirect URL in your app registration. Selecting the sign in link in the top right will prompt you to sign in.
 
     ![Screenshot of the web application pre logged in](Images/13.png)
 
@@ -399,28 +398,28 @@ This exercise will walk you through creating a web application that connects wit
 
     ```csharp
     app.UseOpenIdConnectAuthentication(
-        new OpenIdConnectAuthenticationOptions
-        {
-            // The `Authority` represents the v2.0 endpoint - https://login.microsoftonline.com/common/v2.0
-            // The `Scope` describes the initial permissions that your app will need.  See https://azure.microsoft.com/documentation/articles/active-directory-v2-scopes/
+      new OpenIdConnectAuthenticationOptions
+      {
+        // The `Authority` represents the v2.0 endpoint - https://login.microsoftonline.com/common/v2.0
+        // The `Scope` describes the initial permissions that your app will need.  See https://azure.microsoft.com/documentation/articles/active-directory-v2-scopes/
 
-            ClientId = clientId,
-            Authority = String.Format(CultureInfo.InvariantCulture, aadInstance, "common", "/v2.0"),
-            RedirectUri = redirectUri,
-            Scope = "openid email profile offline_access Mail.Read",
-            PostLogoutRedirectUri = redirectUri,
-            TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = false,
-                // In a real application you would use IssuerValidator for additional checks, like making sure the user's organization has signed up for your app.
-                //     IssuerValidator = (issuer, token, tvp) =>
-                //     {
-                //        //if(MyCustomTenantValidation(issuer))
-                //        return issuer;
-                //        //else
-                //        //    throw new SecurityTokenInvalidIssuerException("Invalid issuer");
-                //    },
-            },
+        ClientId = clientId,
+        Authority = String.Format(CultureInfo.InvariantCulture, aadInstance, "common", "/v2.0"),
+        RedirectUri = redirectUri,
+        Scope = "openid email profile offline_access Mail.Read",
+        PostLogoutRedirectUri = redirectUri,
+        TokenValidationParameters = new TokenValidationParameters
+        {
+          ValidateIssuer = false,
+          // In a real application you would use IssuerValidator for additional checks, like making sure the user's organization has signed up for your app.
+          //     IssuerValidator = (issuer, token, tvp) =>
+          //     {
+          //        //if(MyCustomTenantValidation(issuer))
+          //        return issuer;
+          //        //else
+          //        //    throw new SecurityTokenInvalidIssuerException("Invalid issuer");
+          //    },
+        },
     ```
 
 1. When an authorization code is received, the code is redeemed for an access token and a refresh token, which are stored in cache. Notice the scope that is requested, `Mail.Read`. The token that is received is only valid for reading emails. If the application attempts to send an email, it would fail because the app has not been granted consent.
@@ -428,31 +427,30 @@ This exercise will walk you through creating a web application that connects wit
     ```csharp
     Notifications = new OpenIdConnectAuthenticationNotifications
     {
-        // If there is a code in the OpenID Connect response, redeem it for an access token and refresh token, and store those away.
-        AuthorizationCodeReceived = async (context) =>
+      // If there is a code in the OpenID Connect response, redeem it for an access token and refresh token, and store those away.
+      AuthorizationCodeReceived = async (context) =>
+      {
+        var code = context.Code;
+        string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
+        TokenCache userTokenCache = new MSALSessionCache(signedInUserID,
+          context.OwinContext.Environment["System.Web.HttpContextBase"] as HttpContextBase).GetMsalCacheInstance();
+        ConfidentialClientApplication cca =
+          new ConfidentialClientApplication(clientId, redirectUri, new ClientCredential(appKey), userTokenCache,null);
+        string[] scopes = { "Mail.Read" };
+        try
         {
-            var code = context.Code;
-            string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            TokenCache userTokenCache = new MSALSessionCache(signedInUserID,
-                context.OwinContext.Environment["System.Web.HttpContextBase"] as HttpContextBase).GetMsalCacheInstance();
-            ConfidentialClientApplication cca =
-                new ConfidentialClientApplication(clientId, redirectUri, new ClientCredential(appKey), userTokenCache,null);
-            string[] scopes = { "Mail.Read" };
-            try
-            {
-                AuthenticationResult result = await cca.AcquireTokenByAuthorizationCodeAsync(code, scopes);
-            }
-            catch (Exception eee)
-            {
-
-            }
-        },
-        AuthenticationFailed = (notification) =>
-        {
-            notification.HandleResponse();
-            notification.Response.Redirect("/Error?message=" + notification.Exception.Message);
-            return Task.FromResult(0);
+          AuthenticationResult result = await cca.AcquireTokenByAuthorizationCodeAsync(code, scopes);
         }
+        catch (Exception eee)
+        {
+        }
+      },
+      AuthenticationFailed = (notification) =>
+      {
+        notification.HandleResponse();
+        notification.Response.Redirect("/Error?message=" + notification.Exception.Message);
+        return Task.FromResult(0);
+      }
     }
     ```
 
@@ -462,35 +460,33 @@ This exercise will walk you through creating a web application that connects wit
     [Authorize]
     public async Task<ActionResult> SendMail()
     {
-        // try to get token silently
-        string signedInUserID = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-        TokenCache userTokenCache = new MSALSessionCache(signedInUserID, this.HttpContext).GetMsalCacheInstance();
-        ConfidentialClientApplication cca = new ConfidentialClientApplication(clientId, redirectUri,new ClientCredential(appKey), userTokenCache, null);
-        if (cca.Users.Count() > 0)
+      // try to get token silently
+      string signedInUserID = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
+      TokenCache userTokenCache = new MSALSessionCache(signedInUserID, this.HttpContext).GetMsalCacheInstance();
+      ConfidentialClientApplication cca = new ConfidentialClientApplication(clientId, redirectUri,new ClientCredential(appKey), userTokenCache, null);
+      if (cca.Users.Count() > 0)
+      {
+        string[] scopes = { "Mail.Send" };
+        try
         {
-            string[] scopes = { "Mail.Send" };
-            try
-            {
-                AuthenticationResult result = await cca.AcquireTokenSilentAsync(scopes,cca.Users.First());
-            }
-            catch (MsalUiRequiredException)
-            {
-                try
-                {// when failing, manufacture the URL and assign it
-                    string authReqUrl = await WebApp.Utils.OAuth2RequestManager.GenerateAuthorizationRequestUrl(scopes, cca, this.HttpContext, Url);
-                    ViewBag.AuthorizationRequest = authReqUrl;
-                }
-                catch (Exception ee)
-                {
-
-                }
-            }
+          AuthenticationResult result = await cca.AcquireTokenSilentAsync(scopes,cca.Users.First());
         }
-        else
+        catch (MsalUiRequiredException)
         {
-
+          try
+          {// when failing, manufacture the URL and assign it
+            string authReqUrl = await WebApp.Utils.OAuth2RequestManager.GenerateAuthorizationRequestUrl(scopes, cca, this.HttpContext, Url);
+            ViewBag.AuthorizationRequest = authReqUrl;
+          }
+          catch (Exception ee)
+          {
+          }
         }
-        return View();
+      }
+      else
+      {
+      }
+      return View();
     }
     ```
 
@@ -499,24 +495,23 @@ This exercise will walk you through creating a web application that connects wit
     ```csharp
     public static async Task<string> GenerateAuthorizationRequestUrl(string[] scopes, ConfidentialClientApplication cca, HttpContextBase httpcontext, UrlHelper url)
     {
-        string signedInUserID = ClaimsPrincipal.Current.FindFirst(System.IdentityModel.Claims.ClaimTypes.NameIdentifier).Value;
-        string preferredUsername = ClaimsPrincipal.Current.FindFirst("preferred_username").Value;
-        Uri oauthCodeProcessingPath = new Uri(httpcontext.Request.Url.GetLeftPart(UriPartial.Authority).ToString());
-        string state = GenerateState(httpcontext.Request.Url.ToString(), httpcontext, url, scopes);
-        string tenantID = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-        string domain_hint = (tenantID == "9188040d-6c67-4c5b-b112-36a304b66dad") ? "consumers" : "organizations";
-        Uri authzMessageUri =
-            await cca.GetAuthorizationRequestUrlAsync(
-                scopes,
-            oauthCodeProcessingPath.ToString(),
-            preferredUsername,
-            state == null ? null : "&state=" + state + "&domain_hint=" + domain_hint,
-            null,
-            // TODo change
-            cca.Authority
-            );
-        return authzMessageUri.ToString();
-
+      string signedInUserID = ClaimsPrincipal.Current.FindFirst(System.IdentityModel.Claims.ClaimTypes.NameIdentifier).Value;
+      string preferredUsername = ClaimsPrincipal.Current.FindFirst("preferred_username").Value;
+      Uri oauthCodeProcessingPath = new Uri(httpcontext.Request.Url.GetLeftPart(UriPartial.Authority).ToString());
+      string state = GenerateState(httpcontext.Request.Url.ToString(), httpcontext, url, scopes);
+      string tenantID = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
+      string domain_hint = (tenantID == "9188040d-6c67-4c5b-b112-36a304b66dad") ? "consumers" : "organizations";
+      Uri authzMessageUri =
+        await cca.GetAuthorizationRequestUrlAsync(
+            scopes,
+        oauthCodeProcessingPath.ToString(),
+        preferredUsername,
+        state == null ? null : "&state=" + state + "&domain_hint=" + domain_hint,
+        null,
+        // TODo change
+        cca.Authority
+        );
+      return authzMessageUri.ToString();
     }
     ```
 
