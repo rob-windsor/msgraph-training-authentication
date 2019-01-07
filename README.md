@@ -6,7 +6,7 @@ This module walks through authentication scenarios with Microsoft Graph.
 
 In this lab, you will walk through authentication and permissions scenarios leveraging the Microsoft Graph using the Graph SDK and Microsoft Authentication Library (MSAL).
 
-- [Lab Manual](./Lab.md)
+- [Lab Manual](./lab.md)
 
 ## Demos
 
@@ -30,7 +30,8 @@ This module has been recorded and is available in the Office Development YouTube
 
 | Version |        Date        |                   Comments                   |
 | ------- | ------------------ | -------------------------------------------- |
-| 1.3     | September 12, 2018 | 2018Q4 content refresh                       |
+| 1.3     | December 22, 2018  | 2019Q2 content refresh                       |
+| 1.3     | September 12, 2018 | 2019Q1 content refresh                       |
 | 1.2     | June 8, 2018       | 2018Q4 content refresh & style guide updates |
 | 1.1     | March 14, 2018     | Code Review and minor corrections            |
 | 1.0     |                    | Initial release                              |
