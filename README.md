@@ -20,7 +20,7 @@ This module has been recorded and is available in the Office Development YouTube
 
 ## Contributors
 
-|        Roles         |                            Author(s)                             |
+| Roles                | Author(s)                                                        |
 | -------------------- | ---------------------------------------------------------------- |
 | Lab Manuals / Slides | Andrew Connell (Microsoft MVP, Voitanos) @andrewconnell          |
 | QA                   | Julie Turner (Microsoft MVP, Sympraxis Consulting) @juliemturner |
@@ -28,9 +28,10 @@ This module has been recorded and is available in the Office Development YouTube
 
 ## Version history
 
-| Version |        Date        |                   Comments                   |
+| Version | Date               | Comments                                     |
 | ------- | ------------------ | -------------------------------------------- |
-| 1.3     | December 22, 2018  | 2019Q2 content refresh                       |
+| 1.5     | March 11, 2019     | 2019Q3 content refresh                       |
+| 1.4     | December 22, 2018  | 2019Q2 content refresh                       |
 | 1.3     | September 12, 2018 | 2019Q1 content refresh                       |
 | 1.2     | June 8, 2018       | 2018Q4 content refresh & style guide updates |
 | 1.1     | March 14, 2018     | Code Review and minor corrections            |
@@ -38,6 +39,6 @@ This module has been recorded and is available in the Office Development YouTube
 
 ## Disclaimer
 
-**THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+**THIS CODE IS PROVIDED _AS IS_ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
 <img src="https://telemetry.sharepointpnp.com/msgraph-training-authentication" />
