@@ -34,17 +34,25 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
 
     ![Screenshot of the MVC app with localhost URL highlighted.](Images/01c.png)
 
-1. Visit the [Application Registration Portal](https://apps.dev.microsoft.com/) to register the application.
+1. Open a browser and navigate to the [Azure Active Directory admin center](https://aad.portal.azure.com). Login using a **personal account** (aka: Microsoft Account) or **Work or School Account**.
 
-1. Once the application is created, an app ID is provided on the screen. Copy this app ID as you will use it as the Client ID.
+1. Select **Azure Active Directory** in the left-hand navigation, then select **App registrations (Preview)** under **Manage**.
 
-1. Add a new app secret by selecting the **Generate new password** button and copy the app secret to use later as the client secret.
+1. Select **New registration**. On the **Register an application** page, set the values as follows.
 
-1. Select the **Add Platform** button. In the dialog box, choose **Web Application**. Change the Redirect URL to the URL of your MVC Application. Select **Save**.
+    - Set **Name** to `Graph Authentication Test`.
+    - Set **Supported account types** to **Accounts in any organizational directory and personal Microsoft accounts**.
+    - Under **Redirect URI**, set the first drop-down to `Web` and set the value to `https://localhost:44326`.
 
-    ![Screenshot of Application Registration Portal.](Images/01.png)
+1. Choose **Register**. On the **Graph Authentication Test** page, copy the value of the **Application (client) ID** and save it, you will need it in the next step.
 
-1. Open a new **PowerShell ISE** window. Copy the following code and paste in the script pane. Replace `[YOUR WEB APP URL]` in the third to last line with the URL of the MVC web application you used in the Redirect URL of the application registration.
+1. Select **Certificates & secrets** under **Manage**. Select the **New client secret** button. Enter a value in **Description** and select one of the options for **Expires** and choose **Add**.
+
+1. Copy the client secret value before you leave this page. You will need it in the next step.
+
+    > **Important:** This client secret is never shown again, so make sure you copy it now.
+
+1. Open a new **PowerShell ISE** window. Copy the following code and paste in the script pane.
 
     ```powershell
     function Get-CurrentUserProfile
@@ -67,6 +75,8 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
 
       $clientID = $credential.Username
       $clientSecret = $credential.GetNetworkCredential().Password
+      #URL encode the secret
+      $clientSecret = [System.Web.HttpUtility]::UrlEncode($clientSecret)
 
       #v2.0 authorize URL
       $authorizeUrl = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
@@ -120,13 +130,13 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
 
     #Redirects to this URL will show a 404 in your browser, but allows you to copy the returned code from the URL bar
     #Must match a redirect URL for your registered application
-    $redirectURL = "[YOUR WEB APP URL]"
+    $redirectURL = "https://localhost:44326"
 
     $credential = Get-Credential -Message "Enter the client ID and client secret"
     Get-CurrentUserProfile $credential -scopes $scopes -redirectUrl $redirectURL -displayTokens
     ```
 
-    >Note:  This script will first create an URL to the authorize endpoint, providing the client ID, permission scopes, and redirect URL. If you attempted to use Invoke-RestMethod to this endpoint, the result would be the HTML content of the resulting login screen. You need to log in and authorize the application, so you will copy the URL to a browser.
+    >Note:  This script will first create an URL to the authorize endpoint, providing the client ID, permission scopes, and redirect URL. If you attempted to use `Invoke-RestMethod` to this endpoint, the result would be the HTML content of the resulting login screen. You need to log in and authorize the application, so you will copy the URL to a browser.
 
 1. Run the PowerShell script. You are prompted to enter a username and password. The username is the app ID generated when you registered the application. The password is the app secret that was generated.
 
@@ -156,11 +166,11 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
 
     ![Screenshot of the access_token.](Images/08.png)
 
-1. Open a browser and go to **https://jwt.io**.
+1. Open a browser and go to **https://jwt.ms**.
 
 1. Paste the encoded token to inspect its contents.
 
-    ![Screenshot of the deoded JWT token ](Images/09.png)
+    ![Screenshot of the decoded JWT token ](Images/09.png)
 
 ## Exercise 2: Connecting with Microsoft Graph using OpenID Connect
 
@@ -174,18 +184,6 @@ This exercise will walk you through creating a web application that connects wit
 
 ### Register the application for OpenID Connect
 
-1. Visit the [Application Registration Portal](https://apps.dev.microsoft.com/) to register the application.
-
-1. Once the application is created, an app ID is provided on the screen. Copy this app ID, you will use it as the Client ID.
-
-1. Add a new app secret by selecting the **Generate new password** button and copy the app secret to use later as the client secret.
-
-1. Select the **Add Platform** button. A dialog box is presented, choose **Web Application**.
-
-1. Change the Redirect URL to **https://localhost:44326/** and select **Save** to save all changes.
-
-    ![Screenshot of properties information showing app ID and app secret in Application Registration Portal.](Images/11.png)
-
 1. From your shell or command line, paste the following:
 
     ```shell
@@ -194,7 +192,7 @@ This exercise will walk you through creating a web application that connects wit
 
 1. Open the solution using **Visual Studio 2017**. Restore the missing NuGet packages and reload the solution.
 
-1. Edit the **web.config** file with your app's coordinates. Find the appSettings key `ida:ClientId` and provide the app ID from your app registration. Find the appSettings key `ida:ClientSecret` and provide the value from the app secret generated in the previous step.
+1. Edit the **web.config** file. Find the appSettings key `ida:ClientId` and provide the app ID from your app registration. Find the appSettings key `ida:ClientSecret` and provide the value from the app secret.
 
 ### Inspect the code sample for OpenID Connect
 
@@ -366,29 +364,7 @@ This exercise will walk you through creating a web application that connects wit
 
 This exercise will walk you through creating a web application that connects with Microsoft Graph using OpenID Connect and requests additional permissions.
 
-### Register the application for Dynamic permissions
-
-**Note:** You can reuse the same application registration from the previous lab, [Connecting with Microsoft Graph using OpenID Connect](#exercise2). If you have already completed the app registration, move to the next section.
-
-1. If you are not reusing your previously created application registration, visit the [Application Registration Portal](https://apps.dev.microsoft.com/) to register the application.
-
-1. Once the application is created, an app ID is provided on the screen. Copy this ID, you will use it as the Client ID.
-
-1. Add a new app secret by selecting the **Generate new password** button and copy the secret to use later as the Client Secret.
-
-1. Select the **Add Platform** button. A dialog box is presented, choose **Web Application**. Change the Redirect URL to **https://localhost:44326/**. Select **Save** to save all changes.
-
-    ![Screenshot of permissions dialog for the Application Registration Portal.](Images/11.png)
-
-1. From your shell or command line:
-
-    ```shell
-    git clone https://github.com/Azure-Samples/active-directory-dotnet-webapp-openidconnect-v2.git
-    ```
-
-1. Open the solution using **Visual Studio 2017**. Restore the missing **NuGet** packages and reload the solution.
-
-1. Edit the **web.config** file with your app's coordinates. Find the appSettings key `ida:ClientId` and provide the app ID from your app registration. Find the appSettings key `ida:ClientSecret` and provide the value from the app secret generated in the previous step.
+> **Note:** This exercise continues with the same project you used in Exercise #2.
 
 ### Inspect the code sample for Dynamic permissions
 
