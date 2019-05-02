@@ -36,7 +36,7 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
 
 1. Open a browser and navigate to the [Azure Active Directory admin center](https://aad.portal.azure.com). Login using a **personal account** (aka: Microsoft Account) or **Work or School Account**.
 
-1. Select **Azure Active Directory** in the left-hand navigation, then select **App registrations (Preview)** under **Manage**.
+1. Select **Azure Active Directory** in the left-hand navigation, then select **App registrations** under **Manage**.
 
 1. Select **New registration**. On the **Register an application** page, set the values as follows.
 
@@ -51,6 +51,8 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
 1. Copy the client secret value before you leave this page. You will need it in the next step.
 
     > **Important:** This client secret is never shown again, so make sure you copy it now.
+
+### Create the PowerShell script
 
 1. Open a new **PowerShell ISE** window. Copy the following code and paste in the script pane.
 

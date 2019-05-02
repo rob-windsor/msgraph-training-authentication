@@ -10,17 +10,9 @@ This demo will walk you through creating a web application that connects with Mi
 
 ## Register the application for OpenID Connect
 
-1. Visit the [Application Registration Portal](https://apps.dev.microsoft.com/) to register the application.
+**Note:** You can reuse the same application registration from the previous lab, [Obtain tokens and connect with the Microsoft Graph using REST](../01-rest-via-powershell/readme.md). If you have already completed the app registration, move to the next section.
 
-1. Once the application is created, an app ID is provided on the screen. Copy this app ID, you will use it as the Client ID.
-
-1. Add a new app secret by selecting the **Generate new password** button and copy the app secret to use later as the client secret.
-
-1. Select the **Add Platform** button. A dialog box is presented, choose **Web Application**.
-
-1. Change the Redirect URL to **https://localhost:44326/** and select **Save** to save all changes.
-
-    ![Screenshot of properties information showing app ID and app secret in Application Registration Portal.](../../Images/11.png)
+1. If you are not reusing your previously created application registration, follow the steps in [Register the application for getting tokens using REST](../01-rest-via-powershell/readme.md#register-the-application-for-getting-tokens-using-rest).
 
 1. From your shell or command line, paste the following:
 

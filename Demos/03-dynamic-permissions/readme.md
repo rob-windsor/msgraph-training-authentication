@@ -4,29 +4,21 @@ This demo will walk you through creating a web application that connects with Mi
 
 ## Register the application for Dynamic permissions
 
-**Note:** You can reuse the same application registration from the previous lab, [Connecting with Microsoft Graph using OpenID Connect](#exercise2). If you have already completed the app registration, move to the next section.
+**Note:** You can reuse the same application registration from the previous lab, [Connecting with Microsoft Graph using OpenID Connect](../02-openid-connect/readme.md). If you have already completed the app registration, move to the next section.
 
-1. If you are not reusing your previously created application registration, visit the [Application Registration Portal](https://apps.dev.microsoft.com/) to register the application.
+If you are not reusing your previously created application registration, follow the steps in [Register the application for getting tokens using REST](../01-rest-via-powershell/readme.md#register-the-application-for-getting-tokens-using-rest).
 
-1. Once the application is created, an app ID is provided on the screen. Copy this ID, you will use it as the Client ID.
-
-1. Add a new app secret by selecting the **Generate new password** button and copy the secret to use later as the Client Secret.
-
-1. Select the **Add Platform** button. A dialog box is presented, choose **Web Application**. 
-
-1. Change the Redirect URL to **https://localhost:44326/**. Select **Save** to save all changes.
-
-    ![Screenshot of permissions dialog for the Application Registration Portal.](../../Images/11.png)
-
-1. From your shell or command line:
-
-    ```shell
-    git clone https://github.com/Azure-Samples/active-directory-dotnet-webapp-openidconnect-v2.git
-    ```
-
-1. Open the solution using **Visual Studio 2017**. Restore the missing **NuGet** packages and reload the solution.
-
-1. Edit the **web.config** file with your app's coordinates. Find the appSettings key `ida:ClientId` and provide the app ID from your app registration. Find the appSettings key `ida:ClientSecret` and provide the value from the app secret generated in the previous step.
+> **Note**: If you have completed the previous lab, you can use the same Visual Studio project for this lab. If you have not completed the previous lab, download and configure the starter project using the following steps:
+>
+> 1. From your shell or command line:
+>
+>     ```shell
+>     git clone https://github.com/Azure-Samples/active-directory-dotnet-webapp-openidconnect-v2.git
+>     ```
+>
+> 1. Open the solution using **Visual Studio 2017**. Restore the missing **NuGet** packages and reload the solution.
+>
+> 1. Edit the **web.config** file with your app's coordinates. Find the appSettings key `ida:ClientId` and provide the app ID from your app registration. Find the appSettings key `ida:ClientSecret` and provide the value from the app secret generated in the previous step.
 
 ## Inspect the code sample for Dynamic permissions
 

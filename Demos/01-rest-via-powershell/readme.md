@@ -16,15 +16,25 @@ This demo will walk you through connecting to the Azure AD v2.0 endpoints to aut
 
     ![Screenshot of the MVC app with localhost URL highlighted.](../../Images/01c.png)
 
-1. Visit the [Application Registration Portal](https://apps.dev.microsoft.com/) to register the application.
+1. Open a browser and navigate to the [Azure Active Directory admin center](https://aad.portal.azure.com). Login using a **personal account** (aka: Microsoft Account) or **Work or School Account**.
 
-1. Once the application is created, an app ID is provided on the screen. Copy this app ID as you will use it as the Client ID.
+1. Select **Azure Active Directory** in the left-hand navigation, then select **App registrations** under **Manage**.
 
-1. Add a new app secret by selecting the **Generate new password** button and copy the app secret to use later as the client secret.
+1. Select **New registration**. On the **Register an application** page, set the values as follows.
 
-1. Select the **Add Platform** button. In the dialog box, choose **Web Application**. Change the Redirect URL to the URL of your MVC Application. Select **Save**.
+    - Set **Name** to `Graph Authentication Test`.
+    - Set **Supported account types** to **Accounts in any organizational directory and personal Microsoft accounts**.
+    - Under **Redirect URI**, set the first drop-down to `Web` and set the value to `https://localhost:44326`.
 
-    ![Screenshot of Application Registration Portal.](../../Images/01.png)
+1. Choose **Register**. On the **Graph Authentication Test** page, copy the value of the **Application (client) ID** and save it, you will need it in the next step.
+
+1. Select **Certificates & secrets** under **Manage**. Select the **New client secret** button. Enter a value in **Description** and select one of the options for **Expires** and choose **Add**.
+
+1. Copy the client secret value before you leave this page. You will need it in the next step.
+
+    > **Important:** This client secret is never shown again, so make sure you copy it now.
+
+## Create the PowerShell script
 
 1. Open a new **PowerShell ISE** window. Copy the following code and paste in the script pane. Replace `[YOUR WEB APP URL]` in the third to last line with the URL of the MVC web application you used in the Redirect URL of the application registration.
 
