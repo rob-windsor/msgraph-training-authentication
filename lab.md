@@ -138,7 +138,7 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
 
     ![Screenshot of the output from the PowerShell script of the URL used to authenticate and authorize the application](Images/03.png)
 
-1. Paste the URL in a browser and sign in when prompted. After you sign in an authorize the application, the browser is redirected to the MVC app you have running, the URL contains the code needed.
+1. Paste the URL in a browser and sign in when prompted. After you sign in and authorize the application, the browser is redirected and the URL contains the code needed.
 
     ![Screenshot of browser with consent dialog shown.](Images/04.png)
 
