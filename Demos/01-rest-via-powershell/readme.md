@@ -118,7 +118,7 @@ This demo will walk you through connecting to the Azure AD v2.0 endpoints to aut
 
     ![Screenshot of the output from the PowerShell script of the URL used to authenticate and authorize the application](../../Images/03.png)
 
-1. Paste the URL in a browser and sign in when prompted. After you sign in and authorize the application, the browser will be redirected to the redirect URL we configured earlier (https://localhost:44326). There's nothing listening at that URL but that doesn't matter since all we need now is the value of the code `querystring` parammeter.
+1. Paste the URL in a browser and sign in when prompted. After you sign in and authorize the application, the browser will be redirected to the redirect URL we configured earlier (https://localhost:44326). There's nothing listening at that URL but that doesn't matter since all we need now is the value of the code `querystring` parameter.
 
     ![Screenshot of browser with consent dialog shown.](../../Images/04.png)
 
