@@ -4,18 +4,6 @@ This demo will walk you through connecting to the Azure AD v2.0 endpoints to aut
 
 ## Register the application for getting tokens using REST
 
-1. Open **Visual Studio 2017** and create a new **ASP.NET Web Application (.NET Framework)**.
-
-    ![Screenshot of Visual Studio 2017 new project menu.](../../Images/01a.png)
-
-1. Choose **MVC**.
-
-    ![Screenshot of ASP.NET application menu with MVC highlighted.](../../Images/01b.png)
-
-1. Copy the URL of the MVC app for use in the following steps. Start the debugger.
-
-    ![Screenshot of the MVC app with localhost URL highlighted.](../../Images/01c.png)
-
 1. Open a browser and navigate to the [Azure Active Directory admin center](https://aad.portal.azure.com). Login using a **personal account** (aka: Microsoft Account) or **Work or School Account**.
 
 1. Select **Azure Active Directory** in the left-hand navigation, then select **App registrations** under **Manage**.
@@ -104,6 +92,8 @@ This demo will walk you through connecting to the Azure AD v2.0 endpoints to aut
         Invoke-RestMethod -Method Get -Uri "https://graph.microsoft.com/v1.0/me" -Headers @{"Authorization" = "bearer $token"}
     }
 
+    Add-Type -AssemblyName System.Web
+
     #offline_acess:  Allows requesting refresh tokens
     #openid:  Allows your app to sign the user in and receive an app-specific identifier for the user
     #profile: Allows your app access to all other basic information such as name, preferred username, object ID, and others
@@ -120,7 +110,7 @@ This demo will walk you through connecting to the Azure AD v2.0 endpoints to aut
 
     >Note:  This script will first create an URL to the authorize endpoint, providing the client ID, permission scopes, and redirect URL. If you attempted to use Invoke-RestMethod to this endpoint, the result would be the HTML content of the resulting login screen. You need to log in and authorize the application, so you will copy the URL to a browser.
 
-1. Run the PowerShell script. You are prompted to enter a username and password. The username is the app ID generated when you registered the application. The password is the app secret that was generated.
+1. Run the PowerShell script. You are prompted to enter a username and password. The username is the application ID and the password is the client secret that you saved in previous steps.
 
     ![Screenshot of PowerShell with username and password prompt displayed.](../../Images/02.png)
 
@@ -130,7 +120,7 @@ This demo will walk you through connecting to the Azure AD v2.0 endpoints to aut
 
 1. Paste the URL in a browser and sign in when prompted. After you sign in an authorize the application, the browser is redirected to the MVC app you have running, the URL contains the code needed.
 
-    ![Screenshot of browser with login prompt shown.](../../Images/04.png)
+    ![Screenshot of browser with consent dialog shown.](../../Images/04.png)
 
 1. Copy the code value from the `querystring` in the browser's URL bar, up to the trailing `&session_state` querystring value.
 
@@ -150,6 +140,6 @@ This demo will walk you through connecting to the Azure AD v2.0 endpoints to aut
 
 1. Open a browser and go to **https://jwt.calebb.net**.
 
-1. Paste the encoded token to inspect its contents.
+1. Paste the encoded token (removing any whitespace) to inspect its contents.
 
     ![Screenshot of the deoded JWT token ](../../Images/09.png)
