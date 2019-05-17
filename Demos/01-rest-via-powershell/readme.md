@@ -16,11 +16,17 @@ This demo will walk you through connecting to the Azure AD v2.0 endpoints to aut
 
 1. Choose **Register**. On the **Graph Authentication Test** page, copy the value of the **Application (client) ID** and save it, you will need it in the next step.
 
-1. Select **Certificates & secrets** under **Manage**. Select the **New client secret** button. Enter a value in **Description** and select one of the options for **Expires** and choose **Add**.
+1. Select **Certificates & secrets** under **Manage**. Select the **New client secret** button. Set  **Description** to `Never expires`, set **Expires** to `Never` and choose **Add**.
+
+    ![Screenshot of the client secret settings.](../../Images/20.png)
 
 1. Copy the client secret value before you leave this page. You will need it in the next step.
 
     > **Important:** This client secret is never shown again, so make sure you copy it now.
+
+1. Select **Authentication** under **Manage**. Check `ID tokens` under **Implicit grant** in the **Advanced settings** section and choose **Save**. This setting is required for execrises 2 and 3 in this module.
+
+    ![Screenshot of the client secret settings.](../../Images/21.png)
 
 ## Create the PowerShell script
 
