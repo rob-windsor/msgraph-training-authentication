@@ -1,4 +1,7 @@
-﻿function Get-CurrentUserProfile
+﻿# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT license.
+
+function Get-CurrentUserProfile
 {
   Param
   (
@@ -78,4 +81,4 @@ $scopes = "offline_access+openid+profile+User.Read"
 $redirectURL = "https://localhost:44326"
 
 $credential = Get-Credential -Message "Enter the client ID and client secret"
-Get-CurrentUserProfile $credential -scopes $scopes -redirectUrl $redirectURL -displayTokensF
+Get-CurrentUserProfile $credential -scopes $scopes -redirectUrl $redirectURL -displayTokens
