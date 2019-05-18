@@ -144,7 +144,7 @@ This demo will walk you through creating a web application that connects with Mi
     }
     ```
 
-1. Open the **Controllers/HomeController.cs** file and view the **ReadMail** controller method. Unlike the **About** method, this method is not decorated with the `Authorize` attribute. The method retrieves the current user's token cache and creates a new `IConfidentialClientApplication` using the user's token cache. If there are users in the cache, the code calls `AcquireTokenSilent` which will look in the cache for a token matching the user and the requested scope. If one is not present, it will attempt to use the refresh token. It then attaches the token to the request to Microsoft Graph to retrieve the user's messages.
+1. Open the **Controllers/HomeController.cs** file and view the **ReadMail** controller method. Unlike the **About** method, this method is not decorated with the `Authorize` attribute. The method uses the `BuildConfidentialClientApplication` helper method to construct an object that implements  `IConfidentialClientApplication`. The method then calls `AcquireTokenSilent` which will look in the cache for a token matching the user and the requested scope. It then attaches the token to the request to Microsoft Graph to retrieve the user's messages.
 
     ```csharp
     public async Task<ActionResult> ReadMail()
