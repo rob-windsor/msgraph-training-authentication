@@ -42,7 +42,7 @@ This lab will walk you through connecting to the Azure AD v2.0 endpoints to auth
 
     > **Important:** This client secret is never shown again, so make sure you copy it now.
 
-1. Select **Authentication** under **Manage**. Check `ID tokens` under **Implicit grant** in the **Advanced settings** section and choose **Save**. This setting is required for execrises 2 and 3 in this module.
+1. Select **Authentication** under **Manage**. Check `ID tokens` under **Implicit grant** in the **Advanced settings** section and choose **Save**. This setting indicates that you want to get an ID token along with the access and refresh tokens. You'll see this later in the exercise.
 
     ![Screenshot of the client secret settings.](Images/21.png)
 
@@ -196,7 +196,7 @@ This exercise will walk you through creating a web application that connects wit
 
 1. Open the **App_Start/Startup.Auth.cs** file. This is where authentication begins using the OWIN middleware.
 
-1. Verify that the `Scope` variable in your code is equal to `AuthenticationConfig.BasicSignInScopes + " email Mail.Read"`. Change it if needed.
+1. Verify that the `Scope` variable in your code is equal to `AuthenticationConfig.BasicSignInScopes + " email Mail.Read"`. Change it if needed. `AuthenticationConfig.BasicSignInScopes` has been set to `openid profile offline_access` elsewhere in the application so the scopes you will be requesting are `openid profile offline_access email Mail.Read`.
 
     ```csharp
     app.UseOpenIdConnectAuthentication(
@@ -317,7 +317,7 @@ This exercise will walk you through creating a web application that connects wit
     }
     ```
 
-1. Open the **Controllers/HomeController.cs** file and view the **ReadMail** controller method. Unlike the **About** method, this method is not decorated with the `Authorize` attribute. The method uses the `BuildConfidentialClientApplication` helper method to construct an object that implements  `IConfidentialClientApplication`. The method then calls `AcquireTokenSilent` which will look in the cache for a token matching the user and the requested scope. It then attaches the token to the request to Microsoft Graph to retrieve the user's messages.
+1. Open the **Controllers/HomeController.cs** file and view the **ReadMail** controller method. Unlike the **About** method, this method is not decorated with the `Authorize` attribute. The method uses the `BuildConfidentialClientApplication` helper method (shown earlier) to construct an object that implements  `IConfidentialClientApplication`. The method then calls `AcquireTokenSilent` which will look in the cache for a token matching the user and the requested scope. If one is not present, it will attempt to use the refresh token. It then attaches the token to the request to Microsoft Graph to retrieve the user's messages.
 
     ```csharp
     public async Task<ActionResult> ReadMail()
@@ -386,7 +386,7 @@ This exercise will walk you through creating a web application that connects wit
 
 1. Open the **App_Start/Startup.Auth.cs** file. This is where authentication begins using the OWIN middleware.
 
-1. Verify that the `Scope` variable in your code is equal to `AuthenticationConfig.BasicSignInScopes + " email Mail.Read"`. Change it if needed.
+1. Verify that the `Scope` variable in your code is equal to `AuthenticationConfig.BasicSignInScopes + " email Mail.Read"`. Change it if needed. `AuthenticationConfig.BasicSignInScopes` has been set to `openid profile offline_access` elsewhere in the application so the scopes you will be requesting are `openid profile offline_access email Mail.Read`.
 
     ```csharp
     app.UseOpenIdConnectAuthentication(
@@ -432,11 +432,11 @@ This exercise will walk you through creating a web application that connects wit
     }
     ```
 
-1. Open the **Controllers/HomeController.cs** file. Scroll down to the `SendMail` method with no parameters. When an HTTP GET is issued to this page, it will use the `BuildConfidentialClientApplication` helper method to get an object that implements `IConfidentialClientApplication`. It then calls `AcquireTokenSilent` using the `Mail.Send` scope. This scope was not requested when the app started so the user will not have already consented.  The MSAL code will look in the cache for a token matching the scope, then attempt using the refresh token, and finally will fail if the user has not consented.
+1. Open the **Controllers/HomeController.cs** file. Scroll down to the `SendMail` method with no parameters. When an HTTP GET is issued to this page, it will use the `BuildConfidentialClientApplication` helper method (shown in exercise #2) to get an object that implements `IConfidentialClientApplication`. It then calls `AcquireTokenSilent` using the `Mail.Send` scope. This scope was not requested when the app started so the user will not have already consented.  The MSAL code will look in the cache for a token matching the scope, then attempt using the refresh token, and finally will fail if the user has not consented.
 
     ```csharp
     [Authorize]
-		[HttpGet]
+	[HttpGet]
     public async Task<ActionResult> SendMail()
     {
         // Before we render the send email screen, we use the incremental consent to obtain and cache the access token with the correct scopes

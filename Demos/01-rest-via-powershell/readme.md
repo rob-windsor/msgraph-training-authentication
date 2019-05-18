@@ -24,7 +24,7 @@ This demo will walk you through connecting to the Azure AD v2.0 endpoints to aut
 
     > **Important:** This client secret is never shown again, so make sure you copy it now.
 
-1. Select **Authentication** under **Manage**. Check `ID tokens` under **Implicit grant** in the **Advanced settings** section and choose **Save**. This setting is required for execrises 2 and 3 in this module.
+1. Select **Authentication** under **Manage**. Check `ID tokens` under **Implicit grant** in the **Advanced settings** section and choose **Save**. This setting indicates that you want to get an ID token along with the access and refresh tokens. You'll see this later in the exercise.
 
     ![Screenshot of the client secret settings.](../../Images/21.png)
 
