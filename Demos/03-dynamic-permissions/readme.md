@@ -54,33 +54,19 @@ If you are not reusing your previously created application registration, follow 
 1. When an authorization code is received, the code is redeemed for an access token and a refresh token, which are stored in cache. Notice the scope that is requested, `Mail.Read`. The token that is received is only valid for reading emails. If the application attempts to send an email, it would fail because the app has not been granted consent.
 
     ```csharp
-    Notifications = new OpenIdConnectAuthenticationNotifications
-    {
-        // If there is a code in the OpenID Connect response, redeem it for an access token and refresh token, and store those away.
-        AuthorizationCodeReceived = async (context) =>
-        {
-            var code = context.Code;
-            string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            TokenCache userTokenCache = new MSALSessionCache(signedInUserID,
-                context.OwinContext.Environment["System.Web.HttpContextBase"] as HttpContextBase).GetMsalCacheInstance();
-            ConfidentialClientApplication cca =
-                new ConfidentialClientApplication(clientId, redirectUri, new ClientCredential(appKey), userTokenCache,null);
-            string[] scopes = { "Mail.Read" };
-            try
-            {
-                AuthenticationResult result = await cca.AcquireTokenByAuthorizationCodeAsync(code, scopes);
-            }
-            catch (Exception eee)
-            {
+                Notifications = new OpenIdConnectAuthenticationNotifications()
+                {
+                    AuthorizationCodeReceived = OnAuthorizationCodeReceived,
+                    AuthenticationFailed = OnAuthenticationFailed,
+                }
+            });
+    }
 
-            }
-        },
-        AuthenticationFailed = (notification) =>
-        {
-            notification.HandleResponse();
-            notification.Response.Redirect("/Error?message=" + notification.Exception.Message);
-            return Task.FromResult(0);
-        }
+    private async Task OnAuthorizationCodeReceived(AuthorizationCodeReceivedNotification context)
+    {
+        // Upon successful sign in, get the access token & cache it using MSAL
+        IConfidentialClientApplication clientApp = MsalAppBuilder.BuildConfidentialClientApplication(new ClaimsPrincipal(context.AuthenticationTicket.Identity));
+        AuthenticationResult result = await clientApp.AcquireTokenByAuthorizationCode(new[] { "Mail.Read" }, context.Code).ExecuteAsync();
     }
     ```
 
@@ -88,7 +74,7 @@ If you are not reusing your previously created application registration, follow 
 
     ```csharp
     [Authorize]
-		[HttpGet]
+    [HttpGet]
     public async Task<ActionResult> SendMail()
     {
         // Before we render the send email screen, we use the incremental consent to obtain and cache the access token with the correct scopes
@@ -175,9 +161,9 @@ If you are not reusing your previously created application registration, follow 
 
     >Note: The app was consented the ability to read mail, but was not consented to send an email on the user's behalf. The MSAL code attempts a call to `AcquireTokenSilent`, which fails because the user did not consent. The application catches the exception and the code builds a URL to the authorize endpoint to request the `Mail.Send` permission. The link looks similar to: `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?scope=Mail.Send+offline_access+openid+profile&response_type=code&client_id=0777388d-640c-4bc3-9053-671d6a8300c4&redirect_uri=https:%2F%2Flocalhost:44326%2F&login_hint=AdeleV%40msgraphdemo.onmicrosoft.com&prompt=select_account&domain_hint=organizations`
 
-    ![Screenshot of thr web application prompting user to re-consent.](Images/17.png)
+    ![Screenshot of thr web application prompting user to re-consent.](../../Images/17.png)
 
-    ![Screenshot of permission dialog box.](Images/18.png)
+    ![Screenshot of permission dialog box.](../../Images/18.png)
 
 1. After selecting **Accept**, you are redirected back to the application and the app can now send an email on your behalf.
 
